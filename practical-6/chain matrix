@@ -1,0 +1,41 @@
+n = int(input("Enter the number of matrices: "))
+
+dimensions = []
+
+print("Enter the dimensions of matrices:")
+
+for i in range(n):
+    rows = int(input(f"Enter rows of Matrix {i + 1}: "))
+    cols = int(input(f"Enter columns of Matrix {i + 1}: "))
+    
+    if i > 0 and dimensions[-1] != rows:
+        print("Invalid dimensions! Matrix multiplication is not possible.")
+        exit()
+    
+    dimensions.append(rows)
+    
+    if i == n - 1:
+        dimensions.append(cols)
+  
+dp = [[0 for j in range(n)] for i in range(n)]
+
+
+for length in range(2, n + 1):
+
+    for i in range(n - length + 1):
+
+        j = i + length - 1
+
+        dp[i][j] = float('inf')
+
+        for k in range(i, j):
+
+            cost = (dp[i][k] +
+                    dp[k + 1][j] +
+                    dimensions[i] * dimensions[k + 1] * dimensions[j])
+
+            if cost < dp[i][j]:
+                dp[i][j] = cost
+
+print("\nMinimum number of scalar multiplications:",
+      dp[0][n - 1])
